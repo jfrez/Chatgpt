@@ -62,6 +62,7 @@ export function update() {
     state.resources.fuel = Math.max(0, state.resources.fuel - 0.5);
   }
 
+
   // consume resources
   state.resources.oxygen = Math.max(0, state.resources.oxygen - 0.02);
   state.resources.food = Math.max(0, state.resources.food - 0.01);
@@ -126,8 +127,9 @@ export function update() {
     const starInfluence = 200 + s.size;
     if (distStar < starInfluence && distStar > 0) {
       const strength = (1 - distStar / starInfluence) * 0.1;
-      state.playerVX += (dxs / distStar) * strength;
-      state.playerVY += (dys / distStar) * strength;
+
+      state.playerX += (dxs / distStar) * strength;
+      state.playerY += (dys / distStar) * strength;
     }
     for (const p of s.planets) {
       const angle = p.phase + state.tick * p.speed;
@@ -145,8 +147,9 @@ export function update() {
       const influence = 150 + p.size;
       if (dist < influence && dist > 0) {
         const strength = (1 - dist / influence) * 0.2;
-        state.playerVX += (dx / dist) * strength;
-        state.playerVY += (dy / dist) * strength;
+
+        state.playerX += (dx / dist) * strength;
+        state.playerY += (dy / dist) * strength;
       }
     }
   }
@@ -156,6 +159,7 @@ export function update() {
   state.playerY += state.playerVY;
   state.playerVX *= 0.99;
   state.playerVY *= 0.99;
+
 }
 
 export function draw() {
@@ -212,6 +216,7 @@ export function draw() {
   ctx.closePath();
   ctx.fill();
   ctx.restore();
+
 
   for (const e of state.enemies) {
     const img = generateShipTexture(e.seed);

@@ -7,6 +7,7 @@ Movement has inertia, so you'll drift through space unless you counter-thrust.
 Enemy ships spawn at random and will fire at you. Press **Space** or click the
 mouse to shoot back. Each planet and enemy uses a unique procedurally created
 texture.
+¡
 
 Planets belong to solar systems orbiting colorful stars. Their gravity pulls on
 the player, and landing fully recharges your health. Some worlds also replenish
@@ -23,3 +24,4 @@ fills the window for a full-screen experience. Modern
 browsers load the ES modules correctly when the page is opened from disk. If
 you prefer running a local server instead, any simple web server such as
 `python3 -m http.server` will work just as well.
+

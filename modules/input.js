@@ -2,27 +2,35 @@ import { canvas, state } from './state.js';
 
 let shootFunc = () => {};
 
-function onKeyDown(e) {
+function handleKey(e) {
   switch (e.key) {
     case 'ArrowUp':
     case 'w':
     case 'W':
-      state.keys.up = true;
+
+      state.playerY -= state.speed;
+      state.resources.fuel = Math.max(0, state.resources.fuel - 0.5);
       break;
     case 'ArrowDown':
     case 's':
     case 'S':
-      state.keys.down = true;
+
+      state.playerY += state.speed;
+      state.resources.fuel = Math.max(0, state.resources.fuel - 0.5);
       break;
     case 'ArrowLeft':
     case 'a':
     case 'A':
-      state.keys.left = true;
+
+      state.playerX -= state.speed;
+      state.resources.fuel = Math.max(0, state.resources.fuel - 0.5);
       break;
     case 'ArrowRight':
     case 'd':
     case 'D':
-      state.keys.right = true;
+
+      state.playerX += state.speed;
+      state.resources.fuel = Math.max(0, state.resources.fuel - 0.5);
       break;
     case ' ':
       shootFunc();
@@ -30,35 +38,11 @@ function onKeyDown(e) {
   }
 }
 
-function onKeyUp(e) {
-  switch (e.key) {
-    case 'ArrowUp':
-    case 'w':
-    case 'W':
-      state.keys.up = false;
-      break;
-    case 'ArrowDown':
-    case 's':
-    case 'S':
-      state.keys.down = false;
-      break;
-    case 'ArrowLeft':
-    case 'a':
-    case 'A':
-      state.keys.left = false;
-      break;
-    case 'ArrowRight':
-    case 'd':
-    case 'D':
-      state.keys.right = false;
-      break;
-  }
-}
 
 export function setupInput(shoot) {
   shootFunc = shoot;
-  document.addEventListener('keydown', onKeyDown);
-  document.addEventListener('keyup', onKeyUp);
+  document.addEventListener('keydown', handleKey);
+
   canvas.addEventListener('mousemove', e => {
     state.mouseX = e.offsetX;
     state.mouseY = e.offsetY;
