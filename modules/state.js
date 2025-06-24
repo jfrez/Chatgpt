@@ -1,6 +1,7 @@
 export const canvas = document.getElementById('game');
 export const ctx = canvas.getContext('2d');
 
+
 export const state = {
   playerX: 0,
   playerY: 0,
@@ -8,6 +9,7 @@ export const state = {
   resources: { fuel: 100, oxygen: 100, food: 100 },
   maxResource: 100,
   speed: 4,
+
   tileSize: 512,
   enemies: [],
   bullets: [],

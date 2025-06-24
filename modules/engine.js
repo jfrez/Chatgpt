@@ -34,6 +34,35 @@ export function update() {
   state.weaponHeat = Math.max(0, state.weaponHeat - 0.5);
   if (Math.random() < 0.02) spawnEnemy();
 
+  const orientation = Math.atan2(
+    state.mouseY - canvas.height / 2,
+    state.mouseX - canvas.width / 2
+  );
+  state.angle = orientation;
+
+  const thrust = 0.2;
+  if (state.keys.up && state.resources.fuel > 0) {
+    state.playerVX += Math.cos(orientation) * thrust;
+    state.playerVY += Math.sin(orientation) * thrust;
+    state.resources.fuel = Math.max(0, state.resources.fuel - 0.5);
+  }
+  if (state.keys.down && state.resources.fuel > 0) {
+    state.playerVX -= Math.cos(orientation) * thrust;
+    state.playerVY -= Math.sin(orientation) * thrust;
+    state.resources.fuel = Math.max(0, state.resources.fuel - 0.5);
+  }
+  if (state.keys.left && state.resources.fuel > 0) {
+    state.playerVX -= Math.sin(orientation) * thrust;
+    state.playerVY += Math.cos(orientation) * thrust;
+    state.resources.fuel = Math.max(0, state.resources.fuel - 0.5);
+  }
+  if (state.keys.right && state.resources.fuel > 0) {
+    state.playerVX += Math.sin(orientation) * thrust;
+    state.playerVY -= Math.cos(orientation) * thrust;
+    state.resources.fuel = Math.max(0, state.resources.fuel - 0.5);
+  }
+
+
   // consume resources
   state.resources.oxygen = Math.max(0, state.resources.oxygen - 0.02);
   state.resources.food = Math.max(0, state.resources.food - 0.01);
@@ -98,6 +127,7 @@ export function update() {
     const starInfluence = 200 + s.size;
     if (distStar < starInfluence && distStar > 0) {
       const strength = (1 - distStar / starInfluence) * 0.1;
+
       state.playerX += (dxs / distStar) * strength;
       state.playerY += (dys / distStar) * strength;
     }
@@ -117,12 +147,19 @@ export function update() {
       const influence = 150 + p.size;
       if (dist < influence && dist > 0) {
         const strength = (1 - dist / influence) * 0.2;
+
         state.playerX += (dx / dist) * strength;
         state.playerY += (dy / dist) * strength;
       }
     }
   }
   if (landed) state.playerHealth = 100;
+
+  state.playerX += state.playerVX;
+  state.playerY += state.playerVY;
+  state.playerVX *= 0.99;
+  state.playerVY *= 0.99;
+
 }
 
 export function draw() {
@@ -168,10 +205,18 @@ export function draw() {
     }
   }
 
+  ctx.save();
+  ctx.translate(canvas.width / 2, canvas.height / 2);
+  ctx.rotate(state.angle + Math.PI / 2);
   ctx.fillStyle = 'cyan';
   ctx.beginPath();
-  ctx.arc(canvas.width / 2, canvas.height / 2, 10, 0, Math.PI * 2);
+  ctx.moveTo(0, -12);
+  ctx.lineTo(8, 10);
+  ctx.lineTo(-8, 10);
+  ctx.closePath();
   ctx.fill();
+  ctx.restore();
+
 
   for (const e of state.enemies) {
     const img = generateShipTexture(e.seed);
