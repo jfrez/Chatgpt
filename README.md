@@ -16,4 +16,12 @@ introductory animation shows your ship diving into a black hole before you spawn
 at a random set of coordinates. Weapons heat up as you fire and will temporarily
 lock if they reach 100%, so watch the heat meter and let them cool off before
 blasting away again.
-Open `index.html` in any modern browser to play.
+To avoid browser security errors with ES module loading, run a small local
+web server in this directory and then browse to `http://localhost:8000`. One
+simple option is:
+
+```bash
+python3 -m http.server
+```
+
+With the server running, open `index.html` to play.
